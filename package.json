@@ -1,0 +1,44 @@
+{
+  "name": "divida-up",
+  "version": "1.0.0",
+  "description": "A web app for dividing shared costs amongst a group of people.",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --inline --hot",
+    "deploy": "webpack",
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "pretest": "yarn run lint",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisculy/divida-up.git"
+  },
+  "author": "Chris Culy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chrisculy/divida-up/issues"
+  },
+  "homepage": "https://github.com/chrisculy/divida-up#readme",
+  "devDependencies": {
+    "@types/react": "^15.0.33",
+    "@types/react-dom": "^15.5.1",
+    "@types/react-router-dom": "^4.0.5",
+    "awesome-typescript-loader": "^3.2.1",
+    "css-loader": "^0.28.4",
+    "file-loader": "^0.11.2",
+    "html-webpack-plugin": "^2.29.0",
+    "source-map-loader": "^0.2.1",
+    "style-loader": "^0.18.2",
+    "typescript": "^2.4.1",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.5.0"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-router-dom": "^4.1.1"
+  }
+}
