@@ -1,17 +1,14 @@
-import * as React from "react"
+import * as React from 'react'
 
-export interface PanelProps {
-	title: string;
-	children?: any
+const Panel: React.StatelessComponent<{ title: string }> = props => {
+  return (
+    <div className='panel panel-primary'>
+      <div className='panel-heading'>{props.title}</div>
+      <div className='panel-body'>
+        {props.children}
+      </div>
+    </div>
+  )
 }
 
-export default function Panel(props: PanelProps) {
-	return (
-		<div className="panel panel-primary">
-			<div className="panel-heading">{props.title}</div>
-			<div className="panel-body">
-				{props.children}
-			</div>
-		</div>
-	);
-}
+export default Panel
