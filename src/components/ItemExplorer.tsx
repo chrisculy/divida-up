@@ -1,4 +1,10 @@
 import * as React from 'react'
+import Toolbar from './Toolbar'
+
+const toolbarStyle = {
+  marginTop: '8px',
+  marginBottom: '8px'
+}
 
 export interface ItemExplorerProps<T> {
   title: string
@@ -7,7 +13,7 @@ export interface ItemExplorerProps<T> {
   items: T[]
   selectedItemIndex: number | null
   setSelectedItemIndex: (index: number) => void
-  constructItemPreview: (item: T) => any
+  constructItemPreview: (item: T) => JSX.Element
   constructItemView: (item: T | null) => JSX.Element
   createItemOptions?: {
     createItemLabel: JSX.Element
@@ -20,10 +26,6 @@ export interface ItemExplorerProps<T> {
 }
 
 export class ItemExplorer<T> extends React.Component<ItemExplorerProps<T>, never> {
-  getSelectedItem () {
-    return this.props.selectedItemIndex != null ? this.props.items[this.props.selectedItemIndex] : null
-  }
-
   enterCreateMode () {
     this.props.setMode('create')
   }
@@ -38,41 +40,30 @@ export class ItemExplorer<T> extends React.Component<ItemExplorerProps<T>, never
 
   render () {
     const toolbar = (() => {
-      if (this.props.createItemOptions !== undefined && this.props.editItemOptions !== undefined) {
-        return (
-          <div className='col-xs-12 btn-group' role='group'>
-            <button type='button' className='btn btn-default' onClick={() => this.enterCreateMode()}>{this.props.createItemOptions.createItemLabel}</button>
-            <button type='button' className='btn btn-default' disabled={!this.canEdit()} onClick={() => this.enterEditMode()}>{this.props.editItemOptions.editItemLabel}</button>
-          </div>
-        )
-      } else if (this.props.createItemOptions !== undefined) {
-        return (
-          <div className='col-xs-12 btn-group' role='group'>
-            <button type='button' className='btn btn-default' onClick={() => this.enterCreateMode()}>{this.props.createItemOptions.createItemLabel}</button>
-          </div>
-        )
-      } else if (this.props.editItemOptions !== undefined) {
-        return (
-          <div className='col-xs-12 btn-group' role='group'>
-            <button type='button' className='btn btn-default' disabled={!this.canEdit()} onClick={() => this.enterEditMode()}>{this.props.editItemOptions.editItemLabel}</button>
-          </div>
-        )
-      } else {
-        return <div className='col-xs-12'></div>
+      const buttons: JSX.Element[] = []
+
+      if (this.props.createItemOptions !== undefined) {
+        buttons.push(<button type='button' className='btn btn-default' onClick={() => this.enterCreateMode()}>{this.props.createItemOptions.createItemLabel}</button>)
       }
+
+      if (this.props.editItemOptions !== undefined) {
+        buttons.push(<button type='button' className='btn btn-default' disabled={!this.canEdit()} onClick={() => this.enterEditMode()}>{this.props.editItemOptions.editItemLabel}</button>)
+      }
+
+      return <Toolbar buttons={buttons} style={toolbarStyle} />
     })()
 
     const items = this.props.items.map(this.props.constructItemPreview).map(
       (item, index) =>
         <li
           key={index}
-          className={this.getSelectedItem() === item ? 'list-group-item active' : 'list-group-item'}
+          className={this.props.selectedItemIndex === index ? 'list-group-item active' : 'list-group-item'}
           onClick={() => this.props.setSelectedItemIndex(index)}>
           {item}
         </li>)
 
     const currentItemView = (() => {
-      const selectedItem = this.getSelectedItem()
+      const selectedItem = this.props.selectedItemIndex != null ? this.props.items[this.props.selectedItemIndex] : null
 
       if (this.props.mode === 'create' && this.props.createItemOptions !== undefined) {
         return this.props.createItemOptions.constructCreateItemView()
@@ -85,17 +76,12 @@ export class ItemExplorer<T> extends React.Component<ItemExplorerProps<T>, never
       return {}
     })()
 
-    const toolbarDivStyle = {
-      marginTop: '8px',
-      marginBottom: '8px'
-    }
-
     return (
       <div className='panel panel-default'>
         <div className='panel-heading'>{this.props.title}</div>
         <div className='panel-body'>
           <div className='container'>
-            <div className='row' style={toolbarDivStyle}>
+            <div className='row'>
               {toolbar}
             </div>
             <div className='row'>
@@ -104,7 +90,7 @@ export class ItemExplorer<T> extends React.Component<ItemExplorerProps<T>, never
                   {items}
                 </ul>
               </div>
-              <div className='col-xs-6'>
+              <div className='col-xs-9'>
                 {currentItemView}
               </div>
             </div>

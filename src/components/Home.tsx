@@ -19,7 +19,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
   constructor (props: HomeProps) {
     super(props)
     this.state = {
-      persons: [ 'Thomas', 'Benjamin', 'Margaret', 'Eloise' ],
+      persons: [ 'Thomas', 'Benjamin', 'Margaret', 'Phoebe' ],
       currentPerson: '',
       currentPersonIndex: null,
       newPerson: '',
@@ -117,7 +117,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
           items={this.state.persons}
           selectedItemIndex={this.state.currentPersonIndex}
           setSelectedItemIndex={this.setCurrentPersonIndex.bind(this)}
-          constructItemPreview={ (item) => item }
+          constructItemPreview={ (item) => <span>{item}</span> }
           constructItemView={ (item: string) => <Person name={item} /> }
           createItemOptions={ {
             createItemLabel: createItemLabel,
