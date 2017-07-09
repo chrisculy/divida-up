@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import Root from './Root'
+import App from './App'
 import Home from './Home'
 
 // <Route path='group/add' component={GroupContainer} />
@@ -17,9 +17,9 @@ import Home from './Home'
 const Index = () => {
   return (
     <Router>
-      <Root>
-        <Route exact path='/' component={Home} />
-      </Root>
+      <App title='divida-up'>
+        <Route path='/' render={ (match) => <Home {...match} /> } />
+      </App>
     </Router>
   )
 }
