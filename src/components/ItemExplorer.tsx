@@ -14,18 +14,18 @@ export interface ItemExplorerProps<T> {
   selectedItemIndex: number | null
   setSelectedItemIndex: (index: number) => void
   constructItemPreview: (item: T) => JSX.Element
-  constructItemView: (item: T | null) => JSX.Element
+  viewItemView: JSX.Element
   createItemOptions?: {
     createItemLabel: JSX.Element
-    constructCreateItemView: () => JSX.Element
+    createItemView: JSX.Element
   }
   editItemOptions?: {
     editItemLabel: JSX.Element
-    constructEditItemView: (item: T) => JSX.Element
+    editItemView: JSX.Element
   }
 }
 
-export class ItemExplorer<T> extends React.Component<ItemExplorerProps<T>, never> {
+export default class ItemExplorer<T> extends React.Component<ItemExplorerProps<T>, never> {
   enterCreateMode () {
     this.props.setMode('create')
   }
@@ -63,14 +63,12 @@ export class ItemExplorer<T> extends React.Component<ItemExplorerProps<T>, never
         </li>)
 
     const currentItemView = (() => {
-      const selectedItem = this.props.selectedItemIndex != null ? this.props.items[this.props.selectedItemIndex] : null
-
       if (this.props.mode === 'create' && this.props.createItemOptions !== undefined) {
-        return this.props.createItemOptions.constructCreateItemView()
-      } else if (this.props.mode === 'edit' && this.props.editItemOptions !== undefined && selectedItem != null) {
-        return this.props.editItemOptions.constructEditItemView(selectedItem)
+        return this.props.createItemOptions.createItemView
+      } else if (this.props.mode === 'edit' && this.props.editItemOptions !== undefined) {
+        return this.props.editItemOptions.editItemView
       } else if (this.props.mode === 'view') {
-        return this.props.constructItemView(selectedItem)
+        return this.props.viewItemView
       }
 
       return {}
